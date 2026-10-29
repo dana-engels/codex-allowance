@@ -1,0 +1,28 @@
+name: Bug report
+description: Report an issue with the menu-bar utility.
+title: "Bug: "
+body:
+  - type: markdown
+    attributes:
+      value: "Include only task-relevant information. Do not upload credentials, tokens, full logs, raw account responses, or private browser data."
+  - type: input
+    id: versions
+    attributes:
+      label: App and macOS versions
+      placeholder: "Codex Allowance 2.0; macOS version"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: "What did you do, and what did you expect to happen?"
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Actual behavior or short menu error
+      description: "Use the app's short error rather than full application logs."
+    validations:
+      required: true

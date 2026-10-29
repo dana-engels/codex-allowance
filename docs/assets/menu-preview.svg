@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="220" viewBox="0 0 840 220" role="img" aria-labelledby="title desc">
+<title id="title">Codex Allowance display examples</title>
+<desc id="desc">Illustrative previews: 79 percent and 10:26 PM; 79 percent and a countdown of 4 hours 12 minutes with weekly remaining at 95 percent.</desc>
+<rect width="840" height="220" rx="16" fill="#15171b"/>
+<text x="30" y="39" fill="#aeb8c6" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="13" letter-spacing="1">CODEX ALLOWANCE</text>
+<rect x="30" y="58" width="780" height="48" rx="9" fill="#292d34" stroke="#414752"/>
+<text x="49" y="89" fill="#d9e1ee" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="14">Default</text>
+<text x="789" y="89" fill="#fff" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="18">79% · 10:26 PM</text>
+<rect x="30" y="119" width="780" height="48" rx="9" fill="#292d34" stroke="#414752"/>
+<text x="49" y="150" fill="#d9e1ee" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="14">Countdown + weekly</text>
+<text x="789" y="150" fill="#fff" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="18">79% · in 4h 12m · W 95%</text>
+<text x="30" y="197" fill="#8d98a8" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="12">Illustration only · example values · not a screenshot</text>
+</svg>

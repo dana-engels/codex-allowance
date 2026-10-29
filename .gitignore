@@ -1,0 +1,13 @@
+.build/
+.build-*/
+.swiftpm/
+dist/
+.DS_Store
+*.xcuserstate
+
+# Local credentials and runtime data never belong in this repository.
+.env
+.env.*
+.codex/
+auth.json
+*.log
