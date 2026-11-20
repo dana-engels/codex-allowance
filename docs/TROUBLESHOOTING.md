@@ -14,7 +14,7 @@ If an application update moved the bundled CLI or changed the response schema, t
 
 ## The reading differs from the desktop app
 
-The app refreshes every five minutes. Try a manual refresh and confirm the bundled CLI is using the same account as the desktop app. The app uses the server's reset timestamp and the Mac's local time. It does not infer a reset five hours from launch.
+The app refreshes every minute, with retries spaced up to five minutes after repeated failures. Try a manual refresh and confirm the bundled CLI is using the same account as the desktop app. The app uses the server's reset timestamp and the Mac's local time. It does not infer a reset five hours from launch.
 
 ## Notifications do not appear
 

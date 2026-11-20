@@ -77,7 +77,7 @@ The client tests run a tiny fake command-line server to check behavior when repl
 - Why did you choose a menu-bar app instead of a Shortcut?
 - What does the app build itself, and what information comes from Codex?
 - Why are requests performed on a background queue?
-- What is the difference between a 20-second request timeout and a five-minute refresh interval?
+- What is the difference between a 20-second request timeout and a one-minute refresh interval?
 - How do you prevent weekly usage being displayed as five-hour usage?
 - Why show `--%` when data is unavailable instead of showing `100%`?
 - What happens if the CLI changes after an update?

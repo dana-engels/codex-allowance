@@ -13,7 +13,7 @@
 | Minimum deployment target | macOS 13 |
 | External Swift dependencies | None |
 | Usage source | Bundled Codex CLI app-server interface |
-| Refresh cadence | Five minutes, manual refresh, and wake from sleep |
+| Refresh cadence | One minute after success, bounded retries after failure, manual refresh, and wake from sleep |
 | Test coverage | 20 automated tests; see TESTING.md for scope |
 | Distribution status | Source available; local builds are ad-hoc signed |
 
