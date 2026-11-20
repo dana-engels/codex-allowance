@@ -1,6 +1,6 @@
 # Codex Allowance
 
-A native macOS menu-bar utility that keeps your Codex allowance and reset time visible while you work.
+I built Codex Allowance with help from AI because I kept stopping what I was doing to open Codex to check my current token usage. I wanted to keep my pet off to the side, keep prompting, and glance at my Mac’s menu bar to see how much allowance I had left before it reset.
 
 **Swift · AppKit · macOS 13+ · no third-party Swift dependencies**
 
@@ -14,7 +14,7 @@ The default display is `79% · 10:26 PM`: five-hour allowance remaining, followe
 - Weekly allowance and both reset dates in the dropdown.
 - Optional weekly percentage in the menu-bar text.
 - Optional countdown instead of the reset clock time.
-- Refresh every five minutes, after wake, or on demand.
+- Refresh every minute, after wake, or on demand. Failed reads retry after one, two, four, then five minutes; a successful read restores the one-minute schedule.
 - Last successful update time and readable connection errors.
 - Optional notifications at 20% and 10% remaining, with history saved across restarts.
 - Optional launch at login through macOS Service Management.

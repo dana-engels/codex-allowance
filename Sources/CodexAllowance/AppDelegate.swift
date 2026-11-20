@@ -14,7 +14,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var snapshot: UsageSnapshot?
     private var lastSuccess: Date?
     private var problem: String?
-    private var inFlight = false
+    private var refreshPolicy = RefreshPolicy()
+    private var inFlight: Bool { refreshPolicy.inFlight }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Launch Services normally prevents duplicates, including login launches.
@@ -27,7 +28,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         item.autosaveName = "CodexAllowance"
         let menu = NSMenu(); menu.delegate = self; menu.autoenablesItems = false; item.menu = menu
         render()
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in self?.refresh() }
         // Re-render countdowns and expire old data without another network call.
         displayTimer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { [weak self] _ in self?.render() }
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(didWake), name: NSWorkspace.didWakeNotification, object: nil)
@@ -39,26 +39,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc private func timeChanged() { render() }
 
     @objc private func refresh() {
-        guard !inFlight else { return }
-        inFlight = true
+        guard refreshPolicy.begin() else { return }
+        refreshTimer?.invalidate()
+        refreshTimer = nil
         render()
         DispatchQueue.global(qos: .utility).async { [self] in
             let result = Result { try client.fetch() }
             DispatchQueue.main.async { [self] in
-                inFlight = false
                 switch result {
                 case .success(let value):
                     snapshot = value
                     lastSuccess = value.fetchedAt
                     problem = nil
                     notifications.check(value, enabled: preferences.alertsEnabled)
+                    scheduleRefresh(succeeded: true)
                 case .failure(let error):
                     snapshot = nil
                     problem = error.localizedDescription
+                    scheduleRefresh(succeeded: false)
                 }
                 render()
             }
         }
+    }
+
+    private func scheduleRefresh(succeeded: Bool) {
+        let delay = refreshPolicy.complete(succeeded: succeeded)
+        let timer = Timer(timeInterval: delay, repeats: false) { [weak self] _ in self?.refresh() }
+        refreshTimer = timer
+        RunLoop.main.add(timer, forMode: .common)
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        refreshTimer?.invalidate()
+        displayTimer?.invalidate()
+        NSWorkspace.shared.notificationCenter.removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func currentSnapshot(at now: Date) -> UsageSnapshot? {
@@ -73,7 +89,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let value = currentSnapshot(at: now)
         item.button?.title = UsageDisplay.title(snapshot: value, showWeekly: preferences.showWeekly,
                                                countdown: preferences.showCountdown, now: now)
-        item.button?.toolTip = problem ?? "Codex five-hour allowance remaining and reset time. Refreshes every five minutes."
+        item.button?.toolTip = problem ?? "Codex five-hour allowance remaining and reset time. Refreshes every minute; retries slow down after repeated failures."
         rebuildMenu()
     }
 
@@ -157,7 +173,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     @objc private func openLoginSettings() { login.openSettings() }
     @objc private func showAbout() {
-        showMessage("Codex Allowance 2.0", "Your Codex allowance, at a glance.\n\nSwift + AppKit. Refreshes every five minutes and after wake. Uses the bundled Codex CLI; app updates or expired sign-in can interrupt readings.\n\nThis local build is not notarized. Notifications and login startup are optional.")
+        showMessage("Codex Allowance 2.0", "Your Codex allowance, at a glance.\n\nSwift + AppKit. Refreshes every minute and after wake; retries slow down after repeated failures. Uses the bundled Codex CLI; app updates or expired sign-in can interrupt readings.\n\nThis local build is not notarized. Notifications and login startup are optional.")
     }
     private func showMessage(_ title: String, _ body: String) {
         NSApp.activate(ignoringOtherApps: true)
